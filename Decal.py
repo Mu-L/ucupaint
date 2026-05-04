@@ -325,10 +325,11 @@ def apply_decal_constraint_transforms(op):
 
 @persistent
 def ypaint_decal_constraint_update(scene):
-    op = bpy.context.active_operator
     # NOTE: Only apply constraint transformations when the active object enable the decal contstraint flag
     # This is to improve performance since there's no need to check every selected objects
-    if op and bpy.context.object and bpy.context.object.yp_decal.enable_shrinkwrap:
+    obj = bpy.context.object
+    if obj and obj.yp_decal.enable_shrinkwrap and bpy.context.active_operator:
+        op = bpy.context.active_operator
         # NOTE: Using depsgraph updates is slightly faster than using `startswith`, but only works on Blender 2.80+
         depsgraph = bpy.context.evaluated_depsgraph_get()
         for update in depsgraph.updates:
@@ -338,11 +339,13 @@ def ypaint_decal_constraint_update(scene):
 
 @persistent
 def ypaint_decal_constraint_update_legacy(scene):
-    op = bpy.context.active_operator
     # NOTE: Only apply constraint transformations when the active object enable the decal contstraint flag
     # This is to improve performance since there's no need to check every selected objects
-    if op and bpy.context.object and bpy.context.object.yp_decal.enable_shrinkwrap and op.bl_idname.startswith('TRANSFORM_OT'):
-        apply_decal_constraint_transforms(op)
+    obj = bpy.context.object
+    if obj and obj.yp_decal.enable_shrinkwrap and bpy.context.active_operator:
+        op = bpy.context.active_operator
+        if op.bl_idname.startswith('TRANSFORM_OT'):
+            apply_decal_constraint_transforms(op)
 
 def register():
     bpy.utils.register_class(YSelectDecalObject)
