@@ -61,11 +61,10 @@ class YTryToSelectBakedVertexSelect(bpy.types.Operator):
             self.report({'ERROR'}, "Cannot select the object!")
             return {'CANCELLED'}
 
-        for obj in actual_selectable_objs:
+        for i, obj in enumerate(actual_selectable_objs):
             set_object_hide(obj, False)
             set_object_select(obj, True)
-
-        set_active_object(actual_selectable_objs[0])
+            if i == 0: set_active_object(obj)
         
         bpy.ops.object.mode_set(mode='EDIT')
         bpy.ops.mesh.reveal()
