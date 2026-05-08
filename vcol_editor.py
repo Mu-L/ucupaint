@@ -665,7 +665,10 @@ class YVcolFill(bpy.types.Operator):
                     if use_numpy:
                         loop_to_vert = numpy.zeros(len(mesh.loops), dtype=numpy.uint32)
                         mesh.loops.foreach_get('vertex_index', loop_to_vert)
-                        loop_indices = (numpy.in1d(loop_to_vert, vert_indices)).nonzero()[0]
+                        # Numpy in1d is deprecated since numpy version 2.0
+                        if version_tuple(numpy.__version__) >= (2, 0, 0):
+                            loop_indices = (numpy.isin(loop_to_vert, vert_indices)).nonzero()[0]
+                        else: loop_indices = (numpy.in1d(loop_to_vert, vert_indices)).nonzero()[0]
                         nvcol = numpy.zeros(len(vcol.data) * dimension, dtype=numpy.float32)
                         vcol.data.foreach_get('color', nvcol)
                         nvcol2D = nvcol.reshape(-1, dimension)
