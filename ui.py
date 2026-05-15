@@ -4811,7 +4811,7 @@ def main_draw(self, context):
 
 class NODE_PT_YPaint(bpy.types.Panel):
     bl_space_type = 'NODE_EDITOR'
-    bl_label = get_addon_title() + get_extra_label() + " " + get_current_version_str() + get_alpha_suffix()
+    bl_label = get_addon_title() + get_extra_title() + " " + get_current_version_str() + get_alpha_suffix()
     bl_region_type = 'TOOLS'
     #bl_category = get_addon_title()
 
@@ -4825,7 +4825,7 @@ class NODE_PT_YPaint(bpy.types.Panel):
 
 class NODE_PT_YPaintUI(bpy.types.Panel):
     bl_space_type = 'NODE_EDITOR'
-    bl_label = get_addon_title() + get_extra_label() + " " + get_current_version_str() + get_alpha_suffix()
+    bl_label = get_addon_title() + get_extra_title() + " " + get_current_version_str() + get_alpha_suffix()
     bl_region_type = 'UI'
     bl_category = get_addon_title()
 
@@ -4839,7 +4839,7 @@ class NODE_PT_YPaintUI(bpy.types.Panel):
 
 class VIEW3D_PT_YPaint_tools(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
-    bl_label = get_addon_title() + get_extra_label() + " " + get_current_version_str() + get_alpha_suffix()
+    bl_label = get_addon_title() + get_extra_title() + " " + get_current_version_str() + get_alpha_suffix()
     bl_region_type = 'TOOLS'
     bl_category = get_addon_title()
 
@@ -4851,7 +4851,7 @@ class VIEW3D_PT_YPaint_tools(bpy.types.Panel):
         main_draw(self, context)
 
 class VIEW3D_PT_YPaint_ui(bpy.types.Panel):
-    bl_label = get_addon_title() + get_extra_label() + " " + get_current_version_str() + get_alpha_suffix()
+    bl_label = get_addon_title() + get_extra_title() + " " + get_current_version_str() + get_alpha_suffix()
     bl_space_type = 'VIEW_3D'
     #bl_context = "object"
     bl_region_type = 'UI'

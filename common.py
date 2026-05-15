@@ -721,7 +721,7 @@ def get_addon_title():
     manifest = get_manifest()
     return manifest['name']
 
-def get_extra_label():
+def get_extra_title():
     return ''
 
 def get_addon_warning():
@@ -1113,7 +1113,7 @@ def copy_id_props(source, dest, extras=[], reverse=False):
 
     bpytypes = get_bpytypes()
     props = dir(source)
-    filters = ['bl_rna', 'rna_type']
+    filters = ['bl_rna', 'rna_type', 'bl_system_properties_get']
     filters.extend(extras)
 
     if reverse: props.reverse()
