@@ -13,13 +13,14 @@ bl_info = {
 
 if "bpy" in locals():
     import importlib
-    importlib.reload(Localization)
-    importlib.reload(BaseOperator)
-    importlib.reload(image_ops)
     importlib.reload(common)
+    importlib.reload(preferences)
+    importlib.reload(lib)
+    importlib.reload(BaseOperator)
+    importlib.reload(Localization)
+    importlib.reload(image_ops)
     importlib.reload(bake_common)
     importlib.reload(modifier_common)
-    importlib.reload(lib)
     importlib.reload(Decal)
     importlib.reload(ui)
     importlib.reload(subtree)
@@ -27,7 +28,6 @@ if "bpy" in locals():
     importlib.reload(input_outputs)
     importlib.reload(node_arrangements)
     importlib.reload(node_connections)
-    importlib.reload(preferences)
     importlib.reload(vector_displacement_lib)
     importlib.reload(vector_displacement)
     importlib.reload(vcol_editor)
@@ -49,23 +49,32 @@ if "bpy" in locals():
     importlib.reload(addon_updater_ops)
     importlib.reload(Test)
     importlib.reload(credits_ui)
+    try: importlib.reload(psd_io)
+    except: pass
 else:
+    from . import common
+    from . import preferences
+    from . import lib
+    from . import BaseOperator
     from . import Localization
-    from . import BaseOperator, image_ops, common, bake_common, modifier_common, lib, Decal, ui, subtree, transition_common, input_outputs, node_arrangements, node_connections, preferences
+    from . import image_ops, bake_common, modifier_common, Decal, ui, subtree, transition_common, input_outputs, node_arrangements, node_connections
     from . import vector_displacement_lib, vector_displacement
     from . import vcol_editor, transition, BakeTarget, BakeInfo, UDIM, ImageAtlas, MaskModifier, Mask, Modifier, NormalMapModifier, Layer, ListItem, Bake, BakeToLayer, Root, versioning
     from . import addon_updater_ops
     from . import Test
     from . import credits_ui
+    try: from . import psd_io
+    except: pass
 
-import bpy 
+import bpy
 
 def register():
+    preferences.register()
+    lib.register()
+        
     Localization.register_module(ui)
 
     image_ops.register()
-    preferences.register()
-    lib.register()
     Decal.register()
     ui.register()
     vcol_editor.register()
@@ -92,12 +101,13 @@ def register():
     print('INFO: ' + common.get_addon_title() + ' ' + common.get_current_version_str() + ' is registered!')
 
 def unregister():
+    preferences.unregister()
+    lib.unregister()
+
     Localization.unregister_module(ui)
 
     credits_ui.unregister()
     image_ops.unregister()
-    preferences.unregister()
-    lib.unregister()
     Decal.unregister()
     ui.unregister()
     vcol_editor.unregister()

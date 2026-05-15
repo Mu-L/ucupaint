@@ -2,14 +2,12 @@ import bpy
 from bpy.props import *
 from bpy.types import AddonPreferences
 from bpy.app.handlers import persistent
-from . import image_ops
 from .common import *
-from .lib import *
-from .UDIM import *
 
 def update_icons(self, context):
-    unload_custom_icons()
-    load_custom_icons()
+    from . import lib
+    lib.unload_custom_icons()
+    lib.load_custom_icons()
 
 class YPaintPreferences(AddonPreferences):
     # this must match the addon name, use '__package__'
@@ -206,8 +204,11 @@ class YPaintPreferences(AddonPreferences):
         self.layout.prop(self, 'image_atlas_size')
         self.layout.prop(self, 'hdr_image_atlas_size')
         self.layout.prop(self, 'unique_image_atlas_per_yp')
-        if is_udim_supported():
+
+        from . import UDIM
+        if UDIM.is_udim_supported():
             self.layout.prop(self, 'enable_auto_udim_detection')
+
         self.layout.prop(self, 'enable_material_view_warning')
         self.layout.prop(self, 'make_preview_mode_srgb')
         self.layout.prop(self, 'use_image_preview')
@@ -243,8 +244,10 @@ class YPaintPreferences(AddonPreferences):
             check_col = sub_row.column(align=True)
             check_col.prop(self, "updater_interval_minutes")
             check_col = sub_row.column(align=True)
+
 @persistent
 def auto_save_images(scene):
+    from . import image_ops
 
     ypup = get_user_preferences()
 

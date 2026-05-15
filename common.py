@@ -721,6 +721,9 @@ def get_addon_title():
     manifest = get_manifest()
     return manifest['name']
 
+def get_extra_label():
+    return ''
+
 def get_addon_warning():
     if not is_bl_newer_than(4, 2):
         bl_info = sys.modules[get_addon_name()].bl_info
@@ -768,6 +771,12 @@ def get_bpytypes():
         import bpy_types
         return bpy_types.bpy_types
     return bpy.types
+
+def get_psd_io_module():
+    try:
+        from . import psd_io
+        return psd_io
+    except: return None
 
 def get_srgb_name():
     names = bpy.types.Image.bl_rna.properties['colorspace_settings'].fixed_type.properties['name'].enum_items.keys()
@@ -1005,6 +1014,10 @@ def is_layer_collection_hidden(obj):
 
 def get_addon_filepath():
     return os.path.dirname(bpy.path.abspath(__file__)) + os.sep
+
+def get_lowercase_extension(filepath):
+    try: return filepath.split('.')[-1].lower()
+    except: return ''
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
@@ -2254,6 +2267,25 @@ def replace_new_node(tree, entity, prop, node_id_name, label='', group_name='', 
 
     return node
 
+def create_layer_descriptor():
+    l = dotdict()
+    l.layer = None
+    l.external_layer = None
+    l.parent_idx = -1
+    l.name = 'Layer'
+    l.enable = True
+    l.type = 'IMAGE'
+    l.color = (1.0, 1.0, 1.0)
+    l.opacity = 1.0
+    l.blend_type = 'MIX'
+    l.image = None
+    l.pil_image = None
+    l.mask_image = None
+    l.mask_pil_image = None
+    l.masks = []
+
+    return l
+
 def get_tree(entity):
 
     # Search inside yp tree
@@ -3022,6 +3054,8 @@ def get_layer_index(layer):
     for i, t in enumerate(yp.layers):
         if layer == t:
             return i
+
+    return -1
 
 def get_layer_index_by_name(yp, name):
 
