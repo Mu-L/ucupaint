@@ -11,12 +11,12 @@ bl_info = {
     "category": "Node",
 }
 
-import importlib
-
 def is_available(module_relpath):
+    import importlib.util
     return importlib.util.find_spec(module_relpath, package=__package__)
 
 if "bpy" in locals():
+    import importlib
     importlib.reload(common)
     importlib.reload(preferences)
     importlib.reload(lib)

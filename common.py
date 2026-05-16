@@ -1,4 +1,4 @@
-import bpy, os, sys, re, numpy, math, pathlib, string, random, bmesh, importlib
+import bpy, os, sys, re, numpy, math, pathlib, string, random, bmesh
 import bpy_extras.image_utils
 from mathutils import *
 from bpy.app.handlers import persistent
@@ -776,9 +776,11 @@ def get_bpytypes():
     return bpy.types
 
 def is_package_module_exists(module_relpath):
+    import importlib.util
     return importlib.util.find_spec(module_relpath, package=__package__)
 
 def get_package_module(module_relpath):
+    import importlib
     if is_package_module_exists(module_relpath):
         return importlib.import_module(module_relpath, package=__package__)
     return None
