@@ -5720,9 +5720,7 @@ def draw_ypaint_about(self, context):
             col.operator('wm.url_open', text="Become a Sponsor", icon=icon).url = "https://github.com/sponsors/ucupumar"
             any_ui_drawn = True
 
-        if credits_ui:
-            if any_ui_drawn: col.separator()
-            credits_ui.draw_contributor_status(context, col)
+        if credits_ui: credits_ui.draw_contributor_status(context, col, add_separator=any_ui_drawn)    
 
     if any_ui_drawn: col.separator()
 

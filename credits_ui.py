@@ -1054,11 +1054,12 @@ def draw_contributors(context, layout):
 
     return False
 
-def draw_contributor_status(context, layout):
+def draw_contributor_status(context, layout, add_separator=False):
     ypc = context.window_manager.ypui_credits
 
     if is_online() and is_bl_newer_than(2, 80):
-        #layout.separator()
+        if add_separator:
+            layout.separator()     
         if ypc.connection_status == "FAILED":
             layout.label(text="Failed to load contributors.", icon='ERROR')
             layout.operator('wm.y_force_refresh_sponsors', text='Reload sponsors', icon='FILE_REFRESH')
