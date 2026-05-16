@@ -3127,13 +3127,19 @@ class YOpenImageToLayer(bpy.types.Operator, ImportHelper, BaseOperator.OpenImage
                     layered_image_found = True
                     break
         
-        if layered_image_found:
-            psd_io = get_psd_io_module()
-            if ext == 'psd' and psd_io and psd_io.is_psd_io_supported():
+        if layered_image_found and is_bl_newer_than(2, 80):
+            psd_io = get_package_module('.psd_io')
+            if ext == 'psd':
                 layout.prop(self, 'read_layers', text='Read Photoshop Layers')
                 if self.read_layers:
                     layout.prop(self, 'convert_image_to_solid_color')
-                    psd_io.draw_no_psd_tools_warning(layout)
+                    if psd_io:
+                        psd_io.draw_no_psd_tools_warning(layout)
+                    else: 
+                        layout.alert = True
+                        layout.label(text='Reading PSD layers currently only', icon='ERROR')
+                        layout.label(text='available in Ucupaint Plus!', icon='BLANK1')
+                        layout.alert = False
             elif ext == 'kra':
                 layout.prop(self, 'read_layers', text='Read Krita Layers')
             elif ext == 'xcf':
@@ -3142,8 +3148,7 @@ class YOpenImageToLayer(bpy.types.Operator, ImportHelper, BaseOperator.OpenImage
     def execute(self, context):
         T = time.time()
 
-        psd_io = get_psd_io_module()
-
+        psd_io = get_package_module('.psd_io')
         wm = context.window_manager
         node = get_active_ypaint_node()
         yp = node.node_tree.yp

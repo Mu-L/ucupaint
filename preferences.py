@@ -224,26 +224,27 @@ class YPaintPreferences(AddonPreferences):
 
         if self.developer_mode:
 
-            if is_bl_newer_than(2, 80):
+            if is_bl_newer_than(2, 80) and is_package_module_exists('.credits_ui'):
                 box = self.layout.box()
                 box.prop(self, 'debug_credits')
 
-            box = self.layout.box()
+            if is_package_module_exists('.addon_updater_ops'):
+                box = self.layout.box()
 
-            box.prop(self, "auto_check_update")
-            sub_col = box.column()
-            if not self.auto_check_update:
-                sub_col.enabled = False
-            sub_row = sub_col.row()
-            sub_row.label(text="Interval between checks")
-            sub_row = sub_col.row(align=True)
-            check_col = sub_row.column(align=True)
-            check_col.prop(self, "updater_interval_days")
-            check_col = sub_row.column(align=True)
-            check_col.prop(self, "updater_interval_hours")
-            check_col = sub_row.column(align=True)
-            check_col.prop(self, "updater_interval_minutes")
-            check_col = sub_row.column(align=True)
+                box.prop(self, "auto_check_update")
+                sub_col = box.column()
+                if not self.auto_check_update:
+                    sub_col.enabled = False
+                sub_row = sub_col.row()
+                sub_row.label(text="Interval between checks")
+                sub_row = sub_col.row(align=True)
+                check_col = sub_row.column(align=True)
+                check_col.prop(self, "updater_interval_days")
+                check_col = sub_row.column(align=True)
+                check_col.prop(self, "updater_interval_hours")
+                check_col = sub_row.column(align=True)
+                check_col.prop(self, "updater_interval_minutes")
+                check_col = sub_row.column(align=True)
 
 @persistent
 def auto_save_images(scene):

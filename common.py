@@ -1,4 +1,4 @@
-import bpy, os, sys, re, numpy, math, pathlib, string, random, bmesh
+import bpy, os, sys, re, numpy, math, pathlib, string, random, bmesh, importlib
 import bpy_extras.image_utils
 from mathutils import *
 from bpy.app.handlers import persistent
@@ -766,17 +766,22 @@ def get_current_version():
 def is_online():
     return not is_bl_newer_than(4, 2) or bpy.app.online_access
 
+def is_installed_through_extension_platform():
+    return 'bl_ext.blender_org.' in __package__
+
 def get_bpytypes():
     if not is_bl_newer_than(2, 77):
         import bpy_types
         return bpy_types.bpy_types
     return bpy.types
 
-def get_psd_io_module():
-    try:
-        from . import psd_io
-        return psd_io
-    except: return None
+def is_package_module_exists(module_relpath):
+    return importlib.util.find_spec(module_relpath, package=__package__)
+
+def get_package_module(module_relpath):
+    if is_package_module_exists(module_relpath):
+        return importlib.import_module(module_relpath, package=__package__)
+    return None
 
 def get_srgb_name():
     names = bpy.types.Image.bl_rna.properties['colorspace_settings'].fixed_type.properties['name'].enum_items.keys()

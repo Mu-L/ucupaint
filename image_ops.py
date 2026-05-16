@@ -941,7 +941,7 @@ class YExportLayers(bpy.types.Operator, ExportHelper, BaseOperator.FileSelectOpt
         return get_active_ypaint_node()
 
     def invoke(self, context, event):
-        psd_io = get_psd_io_module()
+        psd_io = get_package_module('.psd_io')
         if not psd_io:
             return self.execute(context)
 
@@ -952,7 +952,7 @@ class YExportLayers(bpy.types.Operator, ExportHelper, BaseOperator.FileSelectOpt
         return {'RUNNING_MODAL'}
 
     def draw(self, context):
-        psd_io = get_psd_io_module()
+        psd_io = get_package_module('.psd_io')
 
         row = split_layout(self.layout, 0.325)
         col = row.column()
@@ -966,7 +966,7 @@ class YExportLayers(bpy.types.Operator, ExportHelper, BaseOperator.FileSelectOpt
         if psd_io: psd_io.draw_no_psd_tools_warning(col)
 
     def execute(self, context):
-        psd_io = get_psd_io_module()
+        psd_io = get_package_module('.psd_io')
         if not psd_io:
             self.report({'ERROR'}, "This feature currently only available in Ucupaint Plus!")
             return {'CANCELLED'}
