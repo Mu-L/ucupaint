@@ -277,7 +277,7 @@ class AddonUpdaterCheckNow(bpy.types.Operator):
             return {'CANCELLED'}
 
         updater.set_check_interval(
-            enabled = settings.auto_check_update,
+            enabled = settings.updater_auto_check_update,
             months = settings.updater_interval_months,
             days = settings.updater_interval_days,
             hours = settings.updater_interval_hours,
@@ -939,7 +939,7 @@ def check_for_update_background():
         return
 
     updater.set_check_interval(
-        enabled = settings.auto_check_update,
+        enabled = settings.updater_auto_check_update,
         months = settings.updater_interval_months,
         days = settings.updater_interval_days,
         hours = settings.updater_interval_hours,
@@ -966,7 +966,7 @@ def check_for_update_nonthreaded(self, context):
         return
 
     updater.set_check_interval(
-        enabled = settings.auto_check_update,
+        enabled = settings.updater_auto_check_update,
         months = settings.updater_interval_months,
         days = settings.updater_interval_days,
         hours = settings.updater_interval_hours,
@@ -1613,7 +1613,7 @@ def register():
         if not first_time:
             settings = get_user_preferences()
             updater.set_check_interval(
-                enabled = settings.auto_check_update,
+                enabled = settings.updater_auto_check_update,
                 months = settings.updater_interval_months,
                 days = settings.updater_interval_days,
                 hours = settings.updater_interval_hours,

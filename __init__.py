@@ -18,6 +18,8 @@ def is_available(module_relpath):
 if "bpy" in locals():
     import importlib
     importlib.reload(common)
+    if 'addon_updater_preferences' in locals(): importlib.reload(addon_updater_preferences)
+    if 'credits_ui' in locals(): importlib.reload(credits_ui)
     importlib.reload(preferences)
     importlib.reload(lib)
     importlib.reload(BaseOperator)
@@ -52,10 +54,11 @@ if "bpy" in locals():
     importlib.reload(versioning)
     if 'addon_updater_ops' in locals(): importlib.reload(addon_updater_ops)
     if 'Test' in locals(): importlib.reload(Test)
-    if 'credits_ui' in locals(): importlib.reload(credits_ui)
     if 'psd_io' in locals(): importlib.reload(psd_io)
 else:
     from . import common
+    if is_available('.addon_updater_preferences'): from . import addon_updater_preferences
+    if is_available('.credits_ui'): from . import credits_ui
     from . import preferences
     from . import lib
     from . import BaseOperator
@@ -65,12 +68,12 @@ else:
     from . import vcol_editor, transition, BakeTarget, BakeInfo, UDIM, ImageAtlas, MaskModifier, Mask, Modifier, NormalMapModifier, Layer, ListItem, Bake, BakeToLayer, Root, versioning
     if is_available('.addon_updater_ops'): from . import addon_updater_ops
     if is_available('.Test'): from . import Test
-    if is_available('.credits_ui'): from . import credits_ui
     if is_available('.psd_io'): from . import psd_io
 
 import bpy
 
 def register():
+    if 'credits_ui' in globals(): credits_ui.register()
     preferences.register()
     lib.register()
         
@@ -98,17 +101,16 @@ def register():
     versioning.register()
     if 'addon_updater_ops' in globals(): addon_updater_ops.register()
     if 'Test' in globals(): Test.register()
-    if 'credits_ui' in globals(): credits_ui.register()
 
     print('INFO: ' + common.get_addon_title() + ' ' + common.get_current_version_str() + ' is registered!')
 
 def unregister():
+    if 'credits_ui' in globals(): credits_ui.unregister()
     preferences.unregister()
     lib.unregister()
 
     Localization.unregister_module(ui)
 
-    if 'credits_ui' in globals(): credits_ui.unregister()
     image_ops.unregister()
     Decal.unregister()
     ui.unregister()
